@@ -1,4 +1,6 @@
-
+Sliding Window: Use two pointers, i (start) and j (end), to iterate over the array while maintaining a window of size K.
+Track Negatives: Maintain a list of negative numbers within the current window, adding new negatives at j and removing the first one when i moves past it.
+Result Storage: For each window of size K, add the first negative number to the result (or 0 if none) and shift the window by incrementing i and j.
 class Compute {
     
     public long[] printFirstNegativeInteger(long A[], int N, int K)
