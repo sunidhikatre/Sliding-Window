@@ -1,0 +1,43 @@
+
+class Compute {
+    
+    public long[] printFirstNegativeInteger(long A[], int N, int K)
+    {
+        List<Long> negList = new ArrayList<>();
+        List<Long> resList = new ArrayList<>();
+        //long[] res = new long[N];
+        int j=0;
+        int i=0;
+        
+        while(j < N) {
+            if(A[j] < 0) {
+                negList.add(A[j]);
+            }
+                
+            if(j-i+1 < K) {
+                j++;
+                continue;
+            } else if(j-i+1 == K) {
+                if(negList.size() == 0) {
+                    resList.add(0L);
+                } else {
+                    resList.add(negList.get(0));
+                    if(A[i] == negList.get(0)) {
+                        negList.remove(0);
+                    }
+                }
+                
+               i++; 
+            }
+            j++;
+        }
+        
+        long[] res = new long[resList.size()];
+        
+        for(int iter=0; iter< resList.size();iter++){
+            res[iter] = resList.get(iter);
+        }
+        
+        return res;
+    }
+}
