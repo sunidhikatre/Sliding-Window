@@ -1,0 +1,64 @@
+
+Initialize a frequency map for characters in p and use a sliding window of size p.length() over s.
+For each character entering the window, decrement its count in the map, and when a valid window (anagram) is found, store the start index.
+As the window slides, restore the count of characters leaving the window, ensuring the frequency map reflects the correct state for future matches.
+
+Input: s = "cbaebabacd", p = "abc"
+Output: [0,6]
+Explanation:
+The substring with start index = 0 is "cba", which is an anagram of "abc".
+The substring with start index = 6 is "bac", which is an anagram of "abc".
+
+class Solution {
+    public List<Integer> findAnagrams(String s, String p) {
+
+        int count = 0;
+        int charCount = 0;
+        List<Integer> res = new ArrayList<>();
+        Map<Character, Integer> mp = new HashMap<>();
+
+          for(int i = 0; i < p.length(); i++) {
+            mp.put(p.charAt(i), mp.getOrDefault(p.charAt(i), 0) + 1);
+        }
+
+        count = mp.size();
+        int j = 0;
+        int i = 0;
+        int k = p.length();
+
+        while(j < s.length()) {
+            if(mp.containsKey(s.charAt(j))) {
+                int val = mp.get(s.charAt(j));
+                mp.put(s.charAt(j), --val);
+                if(mp.get(s.charAt(j)) == 0) {
+                    count --;
+                }
+            }
+
+           
+            if(j - i + 1 < k){
+                j++;
+                continue;
+            }
+
+            if(j - i + 1 == k) {
+                if(count == 0) {
+                    res.add(i);
+                }
+                if(mp.containsKey(s.charAt(i))) {
+                    int val = mp.get(s.charAt(i));
+                    mp.put(s.charAt(i), ++val);
+                    
+                    if(mp.get(s.charAt(i)) == 1) {
+                        count++;
+                    }
+               }
+               i++;
+            }
+
+           
+            j++;
+        }
+        return res;
+    }
+}
