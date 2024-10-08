@@ -1,0 +1,42 @@
+Use a deque to maintain the indices of elements in the current sliding window while keeping the largest element at the front.
+For each element, remove elements from the back of the deque if they are smaller than the current element and slide the window by incrementing i and j.
+Once the window reaches size k, store the maximum (front of the deque) and remove the front if it’s no longer part of the window.
+
+
+class Solution {
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        Deque<Integer> dq = new ArrayDeque<>();
+        List<Integer> resList = new ArrayList<>();
+        int i = 0;
+        int j = 0;
+        int[] res = new int[nums.length - k + 1];
+        while(j < nums.length) {
+            while(dq.size() > 0 && dq.getLast() < nums[j]) {
+                dq.removeLast();
+            }
+            dq.add(nums[j]);
+
+            if(j-i+1 < k) {
+                j++;
+                continue;
+            }
+
+            if(j - i + 1 == k) {
+                resList.add(dq.getFirst());
+
+                if(dq.getFirst() == nums[i]) {
+                    dq.removeFirst();
+                }
+
+                i++;
+                j++;
+            }
+          
+        }
+
+        for(int iter = 0; iter < resList.size(); iter++) {
+            res[iter] = resList.get(iter);
+        }
+        return res;
+    }
+}
