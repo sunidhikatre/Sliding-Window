@@ -1,0 +1,44 @@
+Use two pointers i and j to create a sliding window, and a hashmap to track character frequencies.
+Expand the window by incrementing j, and adjust the window from the left by incrementing i when there are more than k distinct characters.
+Track the maximum window size when exactly k distinct characters are present, and return -1 if no such window is found.
+
+
+// User function Template for Java
+
+class Solution {
+    public int longestkSubstr(String s, int k) {
+        // code here
+        
+        int max = Integer.MIN_VALUE;
+        int i = 0;
+        int j = 0;
+        Map<Character, Integer> map = new HashMap<>();
+        
+        while(j < s.length()) {
+            map.put(s.charAt(j), map.getOrDefault(s.charAt(j), 0) + 1);
+            
+            if(map.size() < k) {
+                j++;
+                continue;
+            } else if(map.size() == k) {
+                max = Math.max(max, j-i+1);
+                j++;
+            } else {
+                while(map.size() > k){
+                    if(map.containsKey(s.charAt(i))) {
+                         map.put(s.charAt(i), map.get(s.charAt(i)) - 1);
+                         if(map.get(s.charAt(i)) == 0){
+                             map.remove(s.charAt(i));
+                         }
+                         i++;
+                    }
+                }
+                j++; 
+            }
+        }
+        if(max == Integer.MIN_VALUE){
+            return -1;
+        }
+        return max;
+    }
+}
