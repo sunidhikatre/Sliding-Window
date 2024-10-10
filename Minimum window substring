@@ -1,0 +1,49 @@
+Initialize a hashmap for t's characters, populate with their counts, and keep track of the total count of characters needed.
+Expand the window by iterating j, decrementing the count of characters in the map. When all characters are covered, update the result.
+Shrink the window by iterating i, incrementing the count in the map until the window is invalid again, and continue expanding.
+
+class Solution {
+    public String minWindow(String s, String t) {
+        Map<Character, Integer> mp = new HashMap<>();
+        int minLen = Integer.MAX_VALUE;
+        int minStart = 0;
+
+        for(int iter=0; iter < t.length(); iter++) {
+            mp.put(t.charAt(iter), mp.getOrDefault(t.charAt(iter), 0) + 1);
+        }
+
+        int count = t.length();
+        int j=0;
+        int i=0;
+        while(j < s.length()) {
+        
+            char endChar = s.charAt(j);
+            if (mp.containsKey(endChar)) {
+                if (mp.get(endChar) > 0) {
+                    count--; 
+                }
+                mp.put(endChar, mp.get(endChar) - 1);
+            }
+
+
+            while(count == 0) {
+                if (j - i + 1 < minLen) {
+                    minLen = j - i + 1;
+                    minStart = i; 
+                }
+                
+                if(mp.containsKey(s.charAt(i))) {
+                    mp.put(s.charAt(i), mp.get(s.charAt(i)) + 1);
+                    if(mp.get(s.charAt(i)) == 1) {
+                        count++;
+                    }           
+                }
+                i++; 
+            } 
+            j++;
+                     
+        }
+        return minLen == Integer.MAX_VALUE ? "" : s.substring(minStart, minStart + minLen);
+ 
+    }
+}
