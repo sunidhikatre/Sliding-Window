@@ -1,0 +1,29 @@
+Calculate initial left sum by picking the first k cards from the left.
+Use a sliding window by removing cards from the left and adding cards from the right one by one, updating the sum and tracking the maximum score.
+Return the maximum score after all possible windows have been evaluated.
+This leverages a two-pointer approach to dynamically adjust the sum by considering cards from both ends.
+
+class Solution {
+    public int maxScore(int[] cardPoints, int k) {
+        int lSum = 0;
+        int rSum = 0;
+        int maxi = Integer.MIN_VALUE;
+        int rindex = cardPoints.length-1;
+
+        for(int i = 0; i < k; i++)
+        {
+            lSum+=cardPoints[i];
+            maxi = lSum;
+        }
+
+        for(int i = k-1; i >= 0; i--) {
+            lSum = lSum - cardPoints[i];
+            rSum = rSum + cardPoints[rindex];
+            rindex--;
+            maxi = Math.max(maxi, lSum + rSum);
+
+        }
+
+        return maxi;
+    }
+}
