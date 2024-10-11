@@ -1,3 +1,31 @@
+Use a sliding window with two pointers i and j, where j expands the window, and i shrinks it when a duplicate character is found.
+As you traverse the string, use a HashSet to store the unique characters in the current window.
+Continuously update the max length when a valid substring (with no duplicate characters) is found.
+
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        HashSet<Character> set = new HashSet<>();
+        int max =0;
+        int i=0;
+
+        for(int j=0; j<s.length(); j++) {
+
+            char currentChar = s.charAt(j);
+
+            while(set.contains(currentChar)) {
+                set.remove(s.charAt(i));
+                i++;
+            }
+
+            set.add(currentChar);
+
+            max = Math.max(max, j-i+1);
+        }
+        return max;
+    }
+}
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
 Use two pointers (i and j) to maintain a sliding window and a map to track the frequency of characters.
 Expand the window (j++) while all characters are unique, and update the maximum length when the window size equals the map size.
 If the window contains duplicates, shrink it by moving i until all characters are unique again.
@@ -31,3 +59,6 @@ class Solution {
         return max;
     }
 }
+
+
+
