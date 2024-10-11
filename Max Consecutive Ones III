@@ -1,0 +1,31 @@
+Use a sliding window with two pointers i and j. Expand j to explore new elements and track the number of zeros.
+If the number of zeros exceeds k, shrink the window by incrementing i until the number of zeros is within the allowed limit.
+Continuously update the maxLength to store the maximum window size that satisfies the condition of at most k zeros.
+
+
+
+class Solution {
+    public int longestOnes(int[] nums, int k) {
+        int i = 0;
+        int j = 0;
+        int maxLength = 0;
+        int zeros = 0;
+        while(j < nums.length) {
+            if(nums[j] == 0) {
+                zeros++;
+            }
+
+            while(zeros > k) {
+                if(nums[i] == 0){
+                    zeros--;
+                }
+                i++;
+            }
+            if(zeros <= k) {
+                maxLength = Math.max(maxLength, j-i+1);
+            }
+            j++;
+        }
+        return maxLength;
+    }
+}
