@@ -1,0 +1,32 @@
+We use a sliding window approach, expanding the window by moving the right pointer r.
+For each character ch at position r, we update its frequency in the map and also track the frequency of the most frequent character in the current window (maxFreq).
+The condition for a valid window is that the number of characters to replace should be less than or equal to k, i.e., (r - l + 1) - maxFreq <= k. If this condition is violated, shrink the window by moving the left pointer l.
+During each step, we update maxLen to be the maximum window length seen so far that satisfies the condition.
+
+class Solution {
+    public int characterReplacement(String s, int k) {
+        int j=0;
+        int i=0;
+        int maxFreq = 0;
+        int maxLength = 0;
+        Map<Character, Integer> map = new HashMap<>();
+        while(j < s.length()) {
+            map.put(s.charAt(j), map.getOrDefault(s.charAt(j), 0) + 1);
+            maxFreq = Math.max(maxFreq, map.get(s.charAt(j)));
+
+            while((j-i+1) - maxFreq > k) {
+                map.put(s.charAt(i), map.get(s.charAt(i))-1);
+                if(map.get(s.charAt(i)) == 0) {
+                    map.remove(s.charAt(i));
+                }
+                i++;
+            }
+
+            if(((j-i+1) -maxFreq) <= k) {
+                maxLength = Math.max(maxLength, j-i+1);
+            }
+            j++;
+        }
+        return maxLength;
+    }
+}
