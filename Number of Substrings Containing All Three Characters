@@ -1,0 +1,24 @@
+Track last seen positions: Use an array lastSeen[3] to keep track of the latest index where 'a', 'b', and 'c' appeared.
+
+Iterate through the string: For each character in the string, update its last seen position. Once all three characters have been seen, compute the minimum index of their last seen positions. This helps determine how many valid substrings can be formed that include all three characters.
+
+Accumulate the result: For every position where all characters are present, add 1 + minimum of last seen indices to the result to account for all valid substrings ending at the current character.
+
+class Solution {
+    public int numberOfSubstrings(String s) {
+        int cnt = 0;
+        int[] lastSeen = new int[3];
+        for(int i=0; i<lastSeen.length; i++){
+            lastSeen[i]=-1;
+        }
+
+        for(int i=0; i<s.length(); i++) {
+            lastSeen[s.charAt(i) - 'a'] = i;
+
+            if(lastSeen[0] != -1 && lastSeen[1] !=-1 &&lastSeen[2]!=-1) {
+              cnt = cnt + 1 + Math.min(lastSeen[0], Math.min(lastSeen[1], lastSeen[2]));
+            }
+        }
+        return cnt;
+    }
+}
